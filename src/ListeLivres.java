@@ -39,7 +39,6 @@ public class ListeLivres implements IListeLivres,Iterable <Livre>{
                 this.listeLivres.remove(livre); //retirer
                 return livreTrouve;
             }
-            return null;
         }
         return null;
 
@@ -65,7 +64,6 @@ public class ListeLivres implements IListeLivres,Iterable <Livre>{
             if (livre.getId() == idLivre) {
                 return true;
             }
-            return false;
         }
         return false;
     }
