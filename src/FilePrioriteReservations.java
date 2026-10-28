@@ -80,14 +80,21 @@ public class FilePrioriteReservations implements Iterable<Reservation> { //ajout
     //Si aucune réservation n’existe pour ce livre, la méthode retourne null.
     public Reservation retirerPourLivre(int idLivre) {
 
-        Reservation reservationPrioritaireSelonLivre;
+        Reservation reservationPrioritaireSelonLivre = null;
         for(Reservation reservation : filePriorite ){//for(int i=0 ; i< filePriorite .size();i++){
+            //Si réservation existe pour ce livre.
             if (reservation.getLivre().getId() == idLivre){
-                reservationPrioritaireSelonLivre=filePriorite.poll();
-                return reservationPrioritaireSelonLivre;
+                reservationPrioritaireSelonLivre = reservation;
+                break;
             }
         }
-        return null;
+        //Si aucune réservation n’existe pour ce livre, la méthode retourne null.
+        if(reservationPrioritaireSelonLivre == null){
+            return null;
+        }
+        //retirer et retourner la réservation prioritaire associée à un livre donné.
+        filePriorite.remove(reservationPrioritaireSelonLivre);
+        return reservationPrioritaireSelonLivre;
     }
 
 

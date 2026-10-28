@@ -214,23 +214,113 @@ public class Demo {
 
         //ex4
         System.out.println("--------------------------------Partie2 ex4-----------------------------");
+        Utilisateur p1 = new Personnel(11,"Jimmie") ;
+        testMap.put(p1.getId(),p1);
+        gestionnaireBibliotheque.setUtilisateurs(testMap);
+
+
+        Reservation reservation4 = new Reservation(livre3,p1.getId(),p1.getTypeUtilisateur());
+        filePrioriteReservations.ajouter(reservation4);
+        gestionnaireBibliotheque.setReservationsEnAttente(filePrioriteReservations);
+
         //vérifier que l’utilisateur est authentifié.
         System.out.println("  ");
         System.out.println("vérifier que l’utilisateur est authentifié ");
         System.out.println(""+ gestionnaireBibliotheque.traiterCommande(4,"RETURN","4 52"));
 
+        // vérifier que les arguments reçus sont invalides
+        System.out.println("  ");
+        System.out.println("vérifier que les arguments reçus sont invalides ");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RETURN","6D 52"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RETURN",""));
+
+        //Si l’emprunt demandé n’existe pas ou n’appartient pas à l’utilisateur connecté, elle retourne
+        //BAD_BORROW_ERROR.
+        System.out.println("  ");
+        System.out.println("vérifier que l’emprunt indiqué n'existe pas ");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RETURN","66 52"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(1,"RETURN","6 52"));
+
+
         //vérifier que l’emprunt indiqué existe bien dans la liste de ses emprunts en cours
         System.out.println("  ");
         System.out.println("vérifier que l’emprunt indiqué existe ");
-        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RETURN","4 52"));
-        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RETURN","6 52"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RETURN","7 52"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RETURN","8 52"));
+
         System.out.println("redevient DISPONIBLE : "+ gestionnaireBibliotheque.traiterCommande(4,"BOOKS",""));
-        Reservation reservation4 = new Reservation(livre3,personnel.getId(),personnel.getTypeUtilisateur());
-        filePrioriteReservations.ajouter(reservation4);
-        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RETURN","6 52"));
+
+        //créé automatiquement un nouvel emprunt pour l’utilisateur prioritaire
+        System.out.println("  ");
+        System.out.println(" nouvel emprunt pour l’utilisateur prioritaire");
+        System.out.println(" "+ gestionnaireBibliotheque.traiterCommande(2,"RETURN","6 52"));
+        System.out.println("redevient emprunt : "+ gestionnaireBibliotheque.traiterCommande(4,"BOOKS",""));
 
 
 
+
+    //*
+        //Vérifier que l’emprunt 6 a été déplacé vers les emprunts terminés de May
+    //    System.out.println("  ");
+     //   System.out.println("Emprunts terminés de May : ");
+     //   System.out.println(""+c2.getEmpruntsTermines());
+
+        //Vérifier que l’emprunt 6 n’est plus dans les emprunts en cours de May
+     //   System.out.println("  ");
+     //   System.out.println("Emprunts en cours de May après le retour : ");
+     //   System.out.println(c2.getEmpruntsEnCours());
+        //Vérifier que la réservation a été retirée de la file
+     //   System.out.println("  ");
+     //   System.out.println("Réservations encore en attente : ");
+      //  System.out.println(gestionnaireBibliotheque.getReservationsEnAttente());
+
+        //Vérifier que la réservation est ATTRIBUEE
+     //   System.out.println("  ");
+      //  System.out.println("Statut de la réservation : ");
+      //  System.out.println(reservation4);
+
+        //Vérifier que le nouvel emprunt a été ajouté à l’utilisateur prioritaire
+     //   System.out.println("  ");
+     //   System.out.println("Emprunts en cours de Jimmie : ");
+     //   System.out.println(p1.getEmpruntsEnCours());
+
+        //Vérifier que le livre 3 est toujours EMPRUNTE
+     //   System.out.println("  ");
+    //    System.out.println("Livre 3 après attribution : ");
+     //   System.out.println(livre3);
+
+        //ex5
+        System.out.println("--------------------------------Partie2 ex5-----------------------------");
+
+
+        //ex6
+        System.out.println("--------------------------------Partie2 ex6-----------------------------");
+        //vérifier que l’utilisateur est authentifié.
+        System.out.println("  ");
+        System.out.println("vérifier que l’utilisateur est authentifié ");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(4,"INFO","4"));
+
+        //vérifier que les arguments reçus sont invalides
+        System.out.println("  ");
+        System.out.println("vérifier que les arguments reçus sont invalides");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(1,"INFO","g"));
+
+        //vérifier que l’emprunt demandé n’existe pas ou n’appartient pas à l’utilisateur connecté
+        System.out.println("  ");
+        System.out.println("vérifier que l’emprunt demandé n’existe pas ou n’appartient pas à l’utilisateur connecté");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"INFO","99"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(3,"INFO","7"));
+
+        //vérifier que si pas d argument ca retourner la liste emprunts en cours de l’utilisateur
+        System.out.println("  ");
+        System.out.println("vérifier que si pas d argument ca retourner la liste emprunts en cours de l’utilisateur");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"INFO",""));
+
+
+        //vérifier que avec argment ca retourner l emprunt trouve de l’utilisateur
+        System.out.println("  ");
+        System.out.println("vérifier que avec argment ca retourner l emprunt trouve de l’utilisateur");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"INFO","5"));
 
 
 

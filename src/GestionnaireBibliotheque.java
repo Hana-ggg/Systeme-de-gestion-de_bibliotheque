@@ -355,14 +355,14 @@ public class GestionnaireBibliotheque {
         Emprunt  empruntTermine =  empruntSupprimer;
 
         //Après le retour du livre ,vérifier s’il existe une réservation en attente pour ce livre
-        if(utilisateurConnecte.possedeReservationEnAttentePourLivre(empruntTermine.getLivre().getId())){
+        Reservation reservationPrioritaire = reservationsEnAttente.retirerPourLivre(empruntTermine.getLivre().getId());
 
+        //if(utilisateurConnecte.possedeReservationEnAttentePourLivre(empruntTermine.getLivre().getId())){
 
-
-        }
+        //}
 
         //Si aucune réservation n’existe, le livre redevient DISPONIBLE
-        else{
+        if(reservationPrioritaire == null){
             empruntSupprimer.getLivre().setStatut(StatutLivre.DISPONIBLE);
         //retourne RETURN_OK <id emprunt> <id livre>.
             String reponse = "RETURN_OK"+"<"+ empruntTermine.getId()+">"+"<" + empruntTermine.getLivre().getId()+">" ;
@@ -370,28 +370,29 @@ public class GestionnaireBibliotheque {
 
         }
 
-        //Si une réservation prioritaire existe pour ce livre
-        if(reservationsEnAttente.retirerPourLivre(empruntTermine.getLivre().getId()) == null ){
-
-        }
-
         //Si une réservation prioritaire existe pour ce livre  elle doit être retirée de la file des réservations en attente,
-        else{
-            Reservation reservationPrioritaire = reservationsEnAttente.retirerPourLivre(empruntTermine.getLivre().getId()) ;
-            // changer statut RETOURNE-->ATTRIBUEE
-            reservationPrioritaire.setStatut(StatutReservation.ATTRIBUEE);//empruntTermine.getLivre().setStatut(StatutEmprunt.ATTRIBUEE);
+        // changer statut RETOURNE-->ATTRIBUEE
+        reservationPrioritaire.setStatut(StatutReservation.ATTRIBUEE);//empruntTermine.getLivre().setStatut(StatutEmprunt.ATTRIBUEE);
+        //si attribuee donc livere sera automatiquement EMPRUNTE pour cette reservation
+        empruntTermine.getLivre().setStatut(StatutLivre.EMPRUNTE);
 
-            //puis un nouvel emprunt doit être créé automatiquement pour l’utilisateur prioritaire.
-            Emprunt empruntNouvel = new Emprunt(empruntTermine.getLivre(), utilisateurConnecte.getId(), jour); //doit utiliser le jour du retour comme jour d’emprunt
-            //ajouté l emprunt nouvel aux emprunts en cours de cet utilisateur
-            utilisateurConnecte.ajouterEmpruntEnCours(empruntNouvel);
-            //retourne uniquement RESERVATION_ASSIGNED <id emprunt> <id livre>.
-
-            String reponse = "RESERVATION_ASSIGNED"+"<"+ empruntNouvel.getId()+">"+"<" + empruntNouvel.getLivre().getId()+">" ;
-            return reponse ;
-
+        //trouve et recupere l utilisateur prioritaire de la reservation si elle existe
+        int utilisateurPrioritaireId = reservationPrioritaire.getIdUtilisateur();
+        Utilisateur utilisateurPrioriaire = this.utilisateurs.get(utilisateurPrioritaireId);
+        if(utilisateurPrioriaire == null){
+            return "BAD_BORROW_ERROR.";
         }
-        return "" ;
+        //puis un nouvel emprunt doit être créé automatiquement pour l’utilisateur prioritaire.
+        Emprunt empruntNouvel = new Emprunt(empruntTermine.getLivre(), utilisateurPrioritaireId, jour); //doit utiliser le jour du retour comme jour d’emprunt
+        //ajouté l emprunt nouvel aux emprunts en cours de cet utilisateur
+        utilisateurPrioriaire.ajouterEmpruntEnCours(empruntNouvel);
+        //retourne uniquement RESERVATION_ASSIGNED <id emprunt> <id livre>.
+
+        String reponse = "RESERVATION_ASSIGNED"+"<"+ empruntNouvel.getId()+">"+"<" + empruntNouvel.getLivre().getId()+">" ;
+        return reponse ;
+
+
+
     }
 
     //Ex5 traitement de la commande RESERVE permet à un utilisateur authentifié de réserver un livre qui n’est pas disponible à l’aide de la commande RESERVE<id livre> . commande RESERVE 8 = réserver le livre ayant l’identifiant 8.
@@ -507,18 +508,26 @@ public class GestionnaireBibliotheque {
         }
 
         //verification si les arguments recus sont invalides
-        if(idConnexion  > 0 &&  argument != null){ //idConnexion  instanceof Integer &&  argument instanceof String
-
-
+        if(argument == null){ //idConnexion  instanceof Integer &&  argument instanceof String
+            argument = "";
         }
 
         //Si les arguments reçus sont invalides, elle retourne BAD_ARGUMENT_ERROR.
-        else{
-            return "BAD_ARGUMENT_ERROR";
+        if(!argument.isEmpty()){
+            try{
+                int empruntId = Integer.parseInt(argument);//verifier c est nombre
+                if( empruntId <= 0 ){
+                    return "BAD_ARGUMENT_ERROR";
+                }
+            }
+
+            catch(NumberFormatException e){
+                return "BAD_ARGUMENT_ERROR";
+            }
         }
 
 
-        int idLivre =  Integer.parseInt(argument); //recuperer l id d lemprunt et convertir en int
+      //  int idLivre =  Integer.parseInt(argument); //recuperer l id d lemprunt et convertir en int
 
 
         //code copier de ex4
@@ -526,7 +535,7 @@ public class GestionnaireBibliotheque {
 
 ////-------------------------------------code unique-------------------------------------////
 
-        int idEmprunt= Integer.parseInt(argument); //recuperer l id d emprunt et convertir en int
+        int idEmprunt= 0;
         ArrayList<String> listeEmpruntReponse = new ArrayList<>();
         String reponse = "";
         String nbEmprunts = "";
@@ -537,9 +546,9 @@ public class GestionnaireBibliotheque {
         String statut= "";
 
 
-
-        //déterminer si un identifiant d’emprunt a été fourni
-        if(idEmprunt > 0) { //|| idEmprunt == null si ecrire sous fome  idEmprunt.equlas("") ca va  va planter?
+        //case 1 sans argument
+        //déterminer si un identifiant d’emprunt n a pas été fourni
+        if(argument.isEmpty()) { //|| idEmprunt == null si ecrire sous fome  idEmprunt.equlas("") ca va  va planter?
             //Cas1  commande INFO, la méthode doit retourner une réponse de la forme: INFO <nb emprunts> {<id emprunt> <id livre> <jour emprunt> <jour retour prévu> <statut>}+.
             //ex:INFO 2 {1 5 10 50 EN_COURS} {2 3 12 52 EN_COURS}
             //à partir des emprunts en cours de l’utilisateur.
@@ -547,63 +556,62 @@ public class GestionnaireBibliotheque {
             ListeEmprunts listeEmprunts = utilisateurConnecte.getEmpruntsEnCours();
             //recupere le nb des empunt dans liste et convertir en String
             nbEmprunts = "" + listeEmprunts.taille();
-            reponse = "INFO" + " " + nbEmprunts + " ";
-            listeEmpruntReponse.add(reponse);
+            reponse = "INFO" + " " + nbEmprunts ;
+           // listeEmpruntReponse.add(reponse);
 
 
             //Parcourir la liste des emprunt
             for (Emprunt emprunt : listeEmprunts) {
                 //recupee les info de chaque emprunt et convertir en string
                 idEmpruntChaine = "" + emprunt.getId();
-                idLivreChaine = "" + emprunt.getLivre().getId();
-                jourEmprunt = "" + emprunt.getJourEmprunt();
-                jourRetourPrevu = "" + emprunt.getJourRetourPrevu();
-                statut = "" + emprunt.getStatut();
+                idLivreChaine = " " + emprunt.getLivre().getId();
+                jourEmprunt = " " + emprunt.getJourEmprunt();
+                jourRetourPrevu = " " + emprunt.getJourRetourPrevu();
+                statut = " " + emprunt.getStatut();
 
                 //forme: INFO <nb emprunts> {<id emprunt> <id livre> <jour emprunt> <jour retour prévu> <statut>}+
                 //ex:INFO 2 {1 5 10 50 EN_COURS} {2 3 12 52 EN_COURS}
-                reponse = "{" + idEmpruntChaine + idLivreChaine + jourEmprunt + jourRetourPrevu + statut + "}";
-                listeEmpruntReponse.add(reponse);
+                reponse += "{" + idEmpruntChaine + idLivreChaine + jourEmprunt + jourRetourPrevu + statut + "}";
+                //listeEmpruntReponse.add(reponse);
 
 
             }
+            return reponse;
         }
-        //Cas2
-        else{
-        //à partir des emprunts en cours de l’utilisateur.
-        //code copie d ex4
-                if(utilisateurConnecte.rechercherEmpruntEnCours(idEmprunt) == null){
-                //Si l’emprunt demandé n’existe pas ou n’appartient pas à l’utilisateur connecté, elle retourne BAD_BORROW_ERROR.
-                    return "BAD_BORROW_ERROR.";
-                }
-                else{
-                //rechercher l’emprunt demandé uniquement parmi les emprunts en cours de l’utilisateur connecté
-                    Emprunt emprunt = utilisateurConnecte.rechercherEmpruntEnCours(idEmprunt);
-                    //Si l’emprunt est trouvé, elle retourne une réponse contenant un seul emprunt
-                    // format: INFO 1 {<id emprunt> <id livre> <jour emprunt>  <jour retour prévu> <statut>}.
-                    //Exemple : INFO 1 {12 5 10 50 EN_COURS}
-
-                    nbEmprunts = "1"; // car une seul emprunt specifique
-                    reponse = "INFO"+" " + nbEmprunts +" "   ;
-                    listeEmpruntReponse.add(reponse);
+        //Cas2 avec argument
+         idEmprunt= Integer.parseInt(argument); //recuperer l id d emprunt et convertir en int
+        //rechercher l’emprunt demandé uniquement parmi les emprunts en cours de l’utilisateur connecté
+        Emprunt emprunt = utilisateurConnecte.rechercherEmpruntEnCours(idEmprunt);
+        //Si l’emprunt demandé n’existe pas ou n’appartient pas à l’utilisateur connecté, elle retourne BAD_BORROW_ERROR.
+        if(emprunt == null){
+            return "BAD_BORROW_ERROR.";
+        }
 
 
-                    //recupee les info de l emprunt et convertir en string
+        //Si l’emprunt est trouvé, elle retourne une réponse contenant un seul emprunt
+        // format: INFO 1 {<id emprunt> <id livre> <jour emprunt>  <jour retour prévu> <statut>}.
+        //Exemple : INFO 1 {12 5 10 50 EN_COURS}
 
-                    idEmpruntChaine = ""+emprunt.getId();
-                    idLivreChaine = ""+ emprunt.getLivre().getId();
-                    jourEmprunt = ""+emprunt.getJourEmprunt();
-                    jourRetourPrevu = "" +emprunt.getJourRetourPrevu();
-                    statut= ""+emprunt.getStatut();
-                    reponse = "{" + idEmpruntChaine + idLivre + jourEmprunt + jourRetourPrevu + statut + "}";
+        nbEmprunts = "1"; // car une seul emprunt specifique
+        reponse = "INFO"+" " + nbEmprunts +" "   ;
+        //listeEmpruntReponse.add(reponse);
 
-                    listeEmpruntReponse.add(reponse);
 
-                }
+        //recupee les info de l emprunt et convertir en string
 
-            }
+        idEmpruntChaine = ""+emprunt.getId();
+        idLivreChaine = " "+ emprunt.getLivre().getId();
+        jourEmprunt = " "+emprunt.getJourEmprunt();
+        jourRetourPrevu = " " +emprunt.getJourRetourPrevu();
+        statut= " "+emprunt.getStatut();
+        reponse += "{" + idEmpruntChaine + idLivreChaine + jourEmprunt + jourRetourPrevu + statut + "}";
 
-            return ""+listeEmpruntReponse;
+
+
+
+
+
+        return reponse;
         }
 
 

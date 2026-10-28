@@ -14,6 +14,8 @@ public abstract  class Utilisateur { //6
     public static final int MAX_RESERVATIONS = 10;
 
 
+
+
     //6.3
     public Utilisateur(int id, String nom) { //ListeEmprunts empruntsEnCours,ListeEmprunts empruntsTermines,ListeEmprunts empruntsTermines
         this.id = id;
@@ -34,14 +36,17 @@ public abstract  class Utilisateur { //6
     public ListeEmprunts getEmpruntsEnCours() {
         return this.empruntsEnCours;
     }
+    public ListeEmprunts getEmpruntsTermines() {
+        return empruntsTermines;
+    }
 
     public FilePrioriteReservations getReservation() {
         return this.reservations;
     }
 
 
-    public int getMAX_RESERVATIONS() {
-        return this.MAX_RESERVATIONS;
+    public static int getMAX_RESERVATIONS() {
+        return MAX_RESERVATIONS;
     }
 
 
@@ -136,12 +141,14 @@ public abstract  class Utilisateur { //6
     //6.12 //besoin d interface?
     // vérifier si l’utilisateur possède déjà une réservation en attente pour le livre correspondant à l’identifiant reçu en paramètre.
     public boolean possedeReservationEnAttentePourLivre(int idLivre) {
-        for (Reservation livre : this.reservations) {
+        //for (Reservation livre : this.reservations) {
+        for (Reservation reservation : this.reservations) {
             //retourne true si une réservation en attente existe déjà pour ce livre, et false sinon.
-            if (livre.getId() == idLivre) {
-                return true;
+            //if (livre.getId() == idLivre) {
+            if ( reservation.getLivre().getId()== idLivre) {
+                    return true;
+
             }
-            return false;
         }
         //This.reservations.retirerPourLivre(int idLivre);
         return false;
@@ -153,7 +160,8 @@ public abstract  class Utilisateur { //6
     public boolean ajouterReservation(Reservation reservation) {
         // Elle retourne true si la réservation a été ajoutée et false sinon
         boolean ajoutReussi = false;
-        if (this.reservations.taille() == this.MAX_RESERVATIONS) {
+        // if (this.reservations.taille() == this.MAX_RESERVATIONS) {
+        if (this.reservations.taille() < this.MAX_RESERVATIONS) {
             ajoutReussi = this.reservations.ajouter(reservation);
         }
         return ajoutReussi;

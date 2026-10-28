@@ -31,6 +31,8 @@ public class Reservation implements Comparable<Reservation>{//4
         return ordreReservationUnique ;
     }
 
+
+
     //4.4
     public Reservation(Livre livre,int idUtilisateur,TypeUtilisateur typeUtilisateur){//,TypeUtilisateur typeUtilisateur,int
         this.livre = livre ;
@@ -44,6 +46,9 @@ public class Reservation implements Comparable<Reservation>{//4
     public int getId(){
         return this.id;
     }
+    public int getIdUtilisateur() {
+        return idUtilisateur;
+    }
     public Livre getLivre() {
         return livre;
     }
@@ -56,55 +61,49 @@ public class Reservation implements Comparable<Reservation>{//4
     //
     @Override
     public int compareTo(Reservation autre) {
-        int ordreReservation_priorite_currente = 0;
-        int ordreReservation_priorit_autre = 0;
-
+        int ordreReservation_priorite_currente;
+        int ordreReservation_priorit_autre ;
+        //PROFESSEUR priorite0
+        //PERSONNEL priorite1
+        //ETUDIANT priorite2
         if (this.typeUtilisateur == TypeUtilisateur.PROFESSEUR
         ) {
             ordreReservation_priorite_currente = 0;
         }
-        if (this.typeUtilisateur == TypeUtilisateur.PERSONNEL) {
+        else if (this.typeUtilisateur == TypeUtilisateur.PERSONNEL) {
             ordreReservation_priorite_currente = 1;
         }
-        if (this.typeUtilisateur == TypeUtilisateur.ETUDIANT) {
+        else{
             ordreReservation_priorite_currente = 2;
         }
 
 
-        if (autre.typeUtilisateur == TypeUtilisateur.PROFESSEUR
-        ) {
-
+        if (autre.typeUtilisateur == TypeUtilisateur.PROFESSEUR) {
             ordreReservation_priorit_autre = 0;
         }
-        if (autre.typeUtilisateur == TypeUtilisateur.PERSONNEL) {
-
+        else if (autre.typeUtilisateur == TypeUtilisateur.PERSONNEL) {
             ordreReservation_priorit_autre = 1;
         }
-        if (autre.typeUtilisateur == TypeUtilisateur.ETUDIANT) {
+        else{
             ordreReservation_priorit_autre = 2;
+        }
 
-            if (ordreReservation_priorite_currente < ordreReservation_priorit_autre) {
+
+
+        if (ordreReservation_priorite_currente != ordreReservation_priorit_autre) {
+            int resultat = Integer.compare(ordreReservation_priorite_currente,ordreReservation_priorit_autre);
+            return resultat;
+        }
+
+        if (this.ordreReservation < autre.ordreReservation) { //priorite au ancien
                 return -1;
             }
-            if (ordreReservation_priorite_currente > ordreReservation_priorit_autre) {
+        if (this.ordreReservation > autre.ordreReservation) {
                 return 1;
-            }
-
-            if (this.typeUtilisateur == autre.typeUtilisateur && ordreReservation_priorite_currente == ordreReservation_priorit_autre) {
-                return 0; // egaux
-            }
-            if (this.typeUtilisateur == autre.typeUtilisateur) {
+             }
 
 
-                if (this.ordreReservation < autre.ordreReservation) { //priorite au ancien
-                    return -1;
-                }
-                else {
-                    return 1;
-                }
-            }
 
-        }
      return 0 ;
     }
     //4.6
