@@ -186,7 +186,7 @@ public abstract  class Utilisateur { //6
     @Override
     public String toString() {
 
-        return "Type d’utilisateur : " + getTypeUtilisateur() + " Identifiant " + id + " nom" + nom + "  Nombre d’emprunts en cour : " + empruntsEnCours.taille() + "  Nombre d’emprunts terminés :  " + empruntsTermines.taille() + "  Nombre de réservations en attente " + reservations.taille();
+        return "Type d’utilisateur : " + getTypeUtilisateur() + " Identifiant " + id + " nom: " + nom + "  Nombre d’emprunts en cour : " + empruntsEnCours.taille() + "  Nombre d’emprunts terminés :  " + empruntsTermines.taille() + "  Nombre de réservations en attente " + reservations.taille();
     }
 }
 

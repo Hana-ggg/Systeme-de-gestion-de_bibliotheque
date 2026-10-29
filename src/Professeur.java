@@ -6,7 +6,7 @@ public class Professeur extends Utilisateur {
     //redéfini les attributs hérités (en dehors de constructeur)
     private static final int MAX_EMPRUNT = 10;
     // la pénalité est de 0.75 $ par jour de retard
-    private static final double PENALTY = 0.25;
+    private static final double PENALTY = 0.75;
     public Professeur(int id, String nom) {
         super(id, nom);
     }

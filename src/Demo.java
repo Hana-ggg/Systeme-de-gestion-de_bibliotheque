@@ -15,6 +15,19 @@ public class Demo {
         Livre livre7 = new Livre("MySql", "Oracl", "Base de donne");
         Livre livre8 = new Livre("PaaS", "Asure", "Disponibilite");
         Livre livre9 = new Livre("Docker", "Francois", "Micro systeme avec conteneur");
+        Livre livre10 = new Livre("Math0", "Suisie", "Calcule");
+        Livre livre11 = new Livre("Francais", "Timmie", "langage");
+        Livre livre12 = new Livre("Philosophy", "Platon", "argumentation");
+        Livre livre13 = new Livre("Finance", "Russell", "commerce");
+        Livre livre14 = new Livre("Art", "Dora", "art plastique");
+        Livre livre15 = new Livre("Physique", "Estelle", "calcule vectorielle");
+        Livre livre16 = new Livre("Chimie", "Karle", "reaction chimique");
+        Livre livre17 = new Livre("Histoire", "Russell", "culture canadianne");
+        Livre livre18 = new Livre("Roman policier", "Alan", "myster");
+        Livre livre19 = new Livre("Roman tragique", "Iris", "tragittie");
+        Livre livre20 = new Livre("Mecanique", "Alexa", "mentenance");
+        Livre livre21 = new Livre("Architecteur", "Alexa", "dessin graphique");
+
 
         Etudiant etudiant = new Etudiant(101, "Amine");
         Personnel personnel = new Personnel(102, "Jake");
@@ -132,20 +145,20 @@ public class Demo {
 
         //partie 2 ex1
         System.out.println("--------------------------------Partie2 ex1-----------------------------");
-        //vérifier que l’identifiant reçu est valide
-        System.out.println(" vérifier que l’identifiant reçu est valide :  "+ gestionnaireBibliotheque.traiterCommande(1,"ID","3D"));
+        //vérifier que l’identifiant reçu n est pas valide
+        System.out.println(" vérifier que l’identifiant reçu n est pas valide :  "+ gestionnaireBibliotheque.traiterCommande(1,"ID","3D"));
 
-        //vérifier que  aucun utilisateur ne correspond à cet identifiant
-        System.out.println(" vérifier que  aucun utilisateur ne correspond à cet identifiant: "+ gestionnaireBibliotheque.traiterCommande(1,"ID","33"));
+        //vérifier que  aucun utilisateur  correspond à cet identifiant
+        System.out.println(" vérifier que  aucun utilisateur  correspond à cet identifiant: "+ gestionnaireBibliotheque.traiterCommande(1,"ID","33"));
 
         //vérifier que l’utilisateur existe dans la liste des utilisateurs enregistrés
         System.out.println(" vérifier que l’utilisateur existe dans la liste des utilisateurs enregistrés: "+ gestionnaireBibliotheque.traiterCommande(1,"ID","2"));
 
-        //vérifier que l’utilisateur  n’est pas déjà authentifié avec la connexion courante
-        System.out.println(" vérifier que l’utilisateur n’est pas déjà authentifié avec la connexion courante: "+ gestionnaireBibliotheque.traiterCommande(1,"ID","1"));
+        //vérifier que l’utilisateur  est  déjà authentifié avec la connexion courante
+        System.out.println(" vérifier que l’utilisateur est  déjà authentifié avec la connexion courante: "+ gestionnaireBibliotheque.traiterCommande(1,"ID","1"));
 
-        //vérifier que l’utilisateur  n’est pas déjà connecté à partir d’un autre client.
-        System.out.println(" vérifier que l’utilisateur n’est pas déjà connecté à partir d’un autre client: "+ gestionnaireBibliotheque.traiterCommande(3,"ID","2"));
+        //vérifier que l’utilisateur  est  déjà connecté à partir d’un autre client.
+        System.out.println(" vérifier que l’utilisateur est  déjà connecté à partir d’un autre client: "+ gestionnaireBibliotheque.traiterCommande(3,"ID","2"));
 
         //Si toutes les vérifications sont respectées, l’utilisateur est associé à la connexion courante et ajouté à
         //la liste des utilisateurs authentifiés
@@ -178,9 +191,9 @@ public class Demo {
 
         //ex3
         System.out.println("--------------------------------Partie2 ex3-----------------------------");
-        //vérifier que l’utilisateur est authentifié.
+        //vérifier que l’utilisateur n est pas authentifié.
         System.out.println("  ");
-        System.out.println("vérifier que l’utilisateur est authentifié ");
+        System.out.println("vérifier que l’utilisateur n est pas authentifié ");
         System.out.println(""+ gestionnaireBibliotheque.traiterCommande(4,"BORROW","1 12"));
 
         //vérifier que les arguments reçus sont invalides
@@ -223,9 +236,9 @@ public class Demo {
         filePrioriteReservations.ajouter(reservation4);
         gestionnaireBibliotheque.setReservationsEnAttente(filePrioriteReservations);
 
-        //vérifier que l’utilisateur est authentifié.
+        //vérifier que l’utilisateur n est pas  authentifié.
         System.out.println("  ");
-        System.out.println("vérifier que l’utilisateur est authentifié ");
+        System.out.println("vérifier que l’utilisateur n est pas authentifié ");
         System.out.println(""+ gestionnaireBibliotheque.traiterCommande(4,"RETURN","4 52"));
 
         // vérifier que les arguments reçus sont invalides
@@ -291,13 +304,89 @@ public class Demo {
 
         //ex5
         System.out.println("--------------------------------Partie2 ex5-----------------------------");
+        livre10.setStatut(StatutLivre.EMPRUNTE);
+        livre11.setStatut(StatutLivre.EMPRUNTE);
+        livre12.setStatut(StatutLivre.EMPRUNTE);
+        livre13.setStatut(StatutLivre.EMPRUNTE);
+        livre14.setStatut(StatutLivre.RESERVE);
+        livre15.setStatut(StatutLivre.RESERVE);
+        livre16.setStatut(StatutLivre.RESERVE);
+        livre17.setStatut(StatutLivre.RESERVE);
+        livre18.setStatut(StatutLivre.PERDU);
+        livre19.setStatut(StatutLivre.PERDU);
+        livre20.setStatut(StatutLivre.PERDU);
+        livre21.setStatut(StatutLivre.PERDU);
+        liste_livre.add(livre10);
+        liste_livre.add(livre11);
+        liste_livre.add(livre12);
+        liste_livre.add(livre13);
+        liste_livre.add(livre14);
+        liste_livre.add(livre15);
+        liste_livre.add(livre16);
+        liste_livre.add(livre17);
+        liste_livre.add(livre18);
+        liste_livre.add(livre19);
+        liste_livre.add(livre20);
+        liste_livre.add(livre21);
+        //vérifier que l’utilisateur n est pas authentifié.
+        System.out.println("  ");
+        System.out.println("vérifier que l’utilisateur n est pas authentifié ");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(4,"RESERVE","3"));
+
+        //vérifier que les arguments reçus sont invalides
+        System.out.println("  ");
+        System.out.println("vérifier que les arguments reçus sont invalides");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","g"));
+
+        //vérifier que le livre demandé n existe pas
+        System.out.println("  ");
+        System.out.println("vérifier que le livre demandé n existe pas");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","33"));
+
+        //vérifier que le livre est déjà disponible
+        System.out.println("  ");
+        System.out.println("vérifier que le livre est déjà disponible");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","4"));
+
+        //vérifier que l’utilisateur a atteint sa limite de réservations
+        System.out.println("  ");
+        System.out.println("vérifier que l’utilisateur a atteint sa limite de réservations");
+        System.out.println("Nombre des reservation pour utilisatuer connecte : "+c2.getReservation().taille());
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","10"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","11"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","12"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","13"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","14"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","15"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","16"));
+        System.out.println("Nombre des reservation pour utilisatuer connecte : "+c2.getReservation().taille());
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","17"));
+        System.out.println("Nombre des reservation pour utilisatuer connecte : "+c2.getReservation().taille());
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","18"));
+        System.out.println("Nombre des reservation pour utilisatuer connecte : "+c2.getReservation().taille());
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","19"));
+        System.out.println("Nombre des reservation pour utilisatuer connecte : "+c2.getReservation().taille());
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","20"));
+        //Donc c est ajoute aux réservations de l’utilisateur
+        System.out.println("Nombre des reservation pour utilisatuer connecte : "+c2.getReservation().taille());
+
+
+        //vérifier que l’utilisateur possède déjà une réservation en attente pour ce livre,
+        System.out.println("  ");
+        System.out.println("vérifier que l’utilisateur possède déjà une réservation en attente pour ce livre,");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RESERVE","10"));
+        System.out.println("La file de reservtaion en ATTENTE");
+        System.out.println(gestionnaireBibliotheque.getReservationsEnAttente());
+        System.out.println("La Liste des livre");
+        System.out.println(gestionnaireBibliotheque.getLivres());
+
 
 
         //ex6
         System.out.println("--------------------------------Partie2 ex6-----------------------------");
-        //vérifier que l’utilisateur est authentifié.
+        //vérifier que l’utilisateur n est pas authentifié.
         System.out.println("  ");
-        System.out.println("vérifier que l’utilisateur est authentifié ");
+        System.out.println("vérifier que l’utilisateur n est pas authentifié ");
         System.out.println(""+ gestionnaireBibliotheque.traiterCommande(4,"INFO","4"));
 
         //vérifier que les arguments reçus sont invalides
@@ -322,6 +411,91 @@ public class Demo {
         System.out.println("vérifier que avec argment ca retourner l emprunt trouve de l’utilisateur");
         System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"INFO","5"));
 
+
+        //ex7
+        System.out.println("--------------------------------Partie2 ex7-----------------------------");
+        Utilisateur u5 = new Professeur(5,"Proton") ;
+        Utilisateur c5 = new Professeur(5,"Proton") ;
+        testConnexionMap.put(5,c5);
+        Livre livre22 = new Livre("Avion", "Suri", "physique et dynamique");
+        liste_livre.add(livre22);
+        //C est l emputre numero 10
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(5,"BORROW","5 12"));
+
+
+        //vérifier que l’utilisateur n est pas authentifié.
+        System.out.println("  ");
+        System.out.println("vérifier que l’utilisateur n  est pas authentifié ");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(4,"PENALTY","4 4"));
+
+        //vérifier que les arguments reçus sont invalides
+        System.out.println("  ");
+        System.out.println("vérifier que les arguments reçus sont invalides");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"PENALTY","g 4"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"PENALTY","4 g"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"PENALTY","4"));
+
+
+        //vérifier que l’emprunt demandé n’existe pas ou n’appartient pas à l’utilisateur connecté
+        System.out.println("  ");
+        System.out.println("Vérifier que l’emprunt demandé n’existe pas ou n’appartient pas à l’utilisateur connecté");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"PENALTY","99 4"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"PENALTY","10 4"));
+
+        //vérifier le montant de la pénalité
+        System.out.println("  ");
+        System.out.println("Vérifier le montant de la pénalité si livre est returne a temp");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"PENALTY","6 52"));
+        System.out.println("Vérifier le montant de la pénalité si livre est returne en retard");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"PENALTY","6 53"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"PENALTY","6 54"));
+
+        System.out.println("  ");
+        System.out.println(" Si un professeur ");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(5,"PENALTY","10 52"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(5,"PENALTY","10 54"));
+
+
+        //ex8
+        System.out.println("--------------------------------Partie2 ex8-----------------------------");
+        //vérifier que les arguments reçus sont invalides, si l’identifiant est déjà utilisé ou si le type d’utilisateurest invalide
+        System.out.println("  ");
+        System.out.println("vérifier que les arguments reçus sont invalides, si l’identifiant est déjà utilisé ou si le type d’utilisateurest invalide ");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(1,"REGISTER","g"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(1,"REGISTER","g b d"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(1,"REGISTER","4 ETUDIANT Lila"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(1,"REGISTER","6 ETUDIANT "));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(1,"REGISTER","6 PRESIDANT Lila"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(1,"REGISTER","-6 ETUDIANT Lila"));
+
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"REGISTER","6 ETUDIANT Lila"));
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(5,"REGISTER","6 ETUDIANT Lila"));
+
+        System.out.println("  ");
+        System.out.println("Liste des utilisateur enregistre");
+        System.out.println(""+gestionnaireBibliotheque.getUtilisateurs());
+        //ex9
+        System.out.println("--------------------------------Partie2 ex8-----------------------------");
+        //vérifier que l’utilisateur n est pas authentifié.
+        System.out.println("  ");
+        System.out.println("vérifier que l’utilisateur n est pas authentifié ");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(4,"EXIT",""));
+
+        System.out.println("  ");
+        System.out.println("Liste des utilisateur authentifies avant");
+        System.out.println(""+gestionnaireBibliotheque.getUtilisateursAuthentifies());
+
+        System.out.println("  ");
+        System.out.println("Si l’utilisateur est authentifié ");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(1,"EXIT",""));
+
+        System.out.println("  ");
+        System.out.println("Liste des utilisateur authentifies apres");
+        System.out.println(""+gestionnaireBibliotheque.getUtilisateursAuthentifies());
+
+        System.out.println("  ");
+        System.out.println("exit une deuximeme fois la meme connection ");
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(1,"EXIT",""));
 
 
 

@@ -8,7 +8,7 @@ public class Personnel extends Utilisateur {
 
     private static final int MAX_EMPRUNT = 7;
     // la pénalité est de 0.50 $ par jour de retard
-    private static final double PENALTY = 0.25;
+    private static final double PENALTY = 0.50;
 
     public Personnel(int id, String nom) {
         super(id, nom);

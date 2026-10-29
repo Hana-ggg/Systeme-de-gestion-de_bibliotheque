@@ -5,8 +5,6 @@ import java.util.Map;
 public class GestionnaireBibliotheque {
 
 
-
-
     //attributs privés
     //contient l’ensemble des utilisateurs enregistrés dans le système ,cle = Interger(identifiant), valeur = Utilisateur,variable = utilisateur
     private Map<Integer, Utilisateur> utilisateurs;
@@ -232,6 +230,12 @@ public class GestionnaireBibliotheque {
         catch (NumberFormatException e) {
             return "BAD_ARGUMENT_ERROR";
         }
+        if(idLivre > 0){
+
+        }
+        else{
+            return "BAD_ARGUMENT_ERROR";
+        }
 
         //vérifier que l’utilisateur est authentifié
         if(utilisateursAuthentifies.containsKey(idConnexion)){
@@ -319,6 +323,12 @@ public class GestionnaireBibliotheque {
             jour=  Integer.parseInt(argumentSeparer[1]); //recuperer le nombre des jour et convertir en int
         }
         catch (NumberFormatException e) {
+            return "BAD_ARGUMENT_ERROR";
+        }
+        if(idEmprunt>0 || jour>0){
+
+        }
+        else{
             return "BAD_ARGUMENT_ERROR";
         }
 
@@ -409,16 +419,31 @@ public class GestionnaireBibliotheque {
         }
 
         //verification si les arguments recus sont invalides
-        if(idConnexion  > 0 &&  argument != null){ //idConnexion  instanceof Integer &&  argument instanceof String
+       // if(idConnexion  > 0 &&  argument != null){ //idConnexion  instanceof Integer &&  argument instanceof String
 
-        }
+      //  }
 
         //Si les arguments reçus sont invalides, elle retourne BAD_ARGUMENT_ERROR.
+      //  else{
+      //      return "BAD_ARGUMENT_ERROR";
+       // }
+        int idLivre;
+        try{
+            idLivre =  Integer.parseInt(argument); //recuperer l id d livreet convertir en int
+
+        }
+        catch (NumberFormatException e){
+            return "BAD_ARGUMENT_ERROR";
+        }
+
+        if(idLivre>0){
+
+        }
         else{
             return "BAD_ARGUMENT_ERROR";
         }
 
-        int idLivre =  Integer.parseInt(argument); //recuperer l id d livreet convertir en int
+       // int idLivre =  Integer.parseInt(argument); //recuperer l id d livreet convertir en int
 
 
         //copie de ex3
@@ -435,9 +460,10 @@ public class GestionnaireBibliotheque {
 
         //vérifier que le livre n’est pas disponible (Statut != DISPONIBLE)
         Livre livreTrouve = livres.rechercher(idLivre); //touve le livre dans la liste selon son id
-        if( !livreTrouve.getStatut().equals("DISPONIBLE")){ //verifier le type de livre trouve …. je ne sait pas si ca va marche avec == StatutLivre.DISPONIBLE
+        //if( !livreTrouve.getStatut().equals("DISPONIBLE")){ //verifier le type de livre trouve …. je ne sait pas si ca va marche avec == StatutLivre.DISPONIBLE
+        if(livreTrouve.getStatut() != StatutLivre.DISPONIBLE){ //verifier le type de livre trouve …. je ne sait pas si ca va marche avec == StatutLivre.DISPONIBLE
 
-        }
+            }
 
         //Si le livre est déjà disponible, elle retourne BOOK_ALREADY_AVAILABLE_ERROR.
         else{
@@ -447,8 +473,15 @@ public class GestionnaireBibliotheque {
         //vérifier que l’utilisateur n’a pas atteint sa limite maximale de réservations
         Utilisateur utilisateurConnecte = this.utilisateursAuthentifies.get(idConnexion);
         //Si l’utilisateur a atteint sa limite de réservations, elle retourne RESERVATION_LIMIT_ERROR.
+        //vérifier que l’utilisateur ne possède pas déjà une réservation en attente pour ce même livre.
+        if(utilisateurConnecte.possedeReservationEnAttentePourLivre(idLivre)){
+            ///Si l’utilisateur possède déjà une réservation en attente pour ce livre, elle retourne BAD_ARGUMENT_ERROR.
+            return "BAD_ARGUMENT_ERROR";
+        }
 
-        if(utilisateurConnecte.getReservation().taille() == utilisateurConnecte.getMAX_RESERVATIONS()){
+        else{}
+
+        if(utilisateurConnecte.getReservation().taille() >= utilisateurConnecte.getMAX_RESERVATIONS()){
 
             return "RESERVATION_LIMIT_ERROR";
 
@@ -456,13 +489,7 @@ public class GestionnaireBibliotheque {
 
         else{}
 
-        //vérifier que l’utilisateur ne possède pas déjà une réservation en attente pour ce même livre.
-        if(utilisateurConnecte.possedeReservationEnAttentePourLivre (idLivre)){
-        ///Si l’utilisateur possède déjà une réservation en attente pour ce livre, elle retourne BAD_ARGUMENT_ERROR.
-            return "BAD_ARGUMENT_ERROR";
-        }
 
-        else{}
 
         //Si toutes les validations sont respectées
         //créer l’objet Reservation correspondant
@@ -471,11 +498,15 @@ public class GestionnaireBibliotheque {
 
 
 
-        //ajouter objet Reservation à la file de priorité des réservations
-        reservationsEnAttente.ajouter(reservation);
+
 
         //ajouter objet Reservation aux réservations de l’utilisateur,
         boolean succes =utilisateurConnecte.ajouterReservation(reservation);
+        if(succes==false){
+            return "RESERVATION_LIMIT_ERROR";
+        }
+        //ajouter objet Reservation à la file de priorité des réservations
+        reservationsEnAttente.ajouter(reservation);
 
         //modifier le statut du livre à RESERVE.
         livreTrouve.setStatut(StatutLivre.RESERVE);
@@ -511,11 +542,11 @@ public class GestionnaireBibliotheque {
         if(argument == null){ //idConnexion  instanceof Integer &&  argument instanceof String
             argument = "";
         }
-
+        int empruntId=0;
         //Si les arguments reçus sont invalides, elle retourne BAD_ARGUMENT_ERROR.
         if(!argument.isEmpty()){
             try{
-                int empruntId = Integer.parseInt(argument);//verifier c est nombre
+                empruntId = Integer.parseInt(argument);//verifier c est nombre
                 if( empruntId <= 0 ){
                     return "BAD_ARGUMENT_ERROR";
                 }
@@ -525,6 +556,8 @@ public class GestionnaireBibliotheque {
                 return "BAD_ARGUMENT_ERROR";
             }
         }
+
+
 
 
       //  int idLivre =  Integer.parseInt(argument); //recuperer l id d lemprunt et convertir en int
@@ -630,17 +663,35 @@ public class GestionnaireBibliotheque {
             return "AUTHENTICATION_ERROR" ;
         }
         //verification si les arguments recus sont invalides
-        if(idConnexion  > 0 &&  argument != null ){//idConnexion  instanceof Integer &&  argument instanceof String
-        }
+      //  if(idConnexion  > 0 &&  argument != null ){//idConnexion  instanceof Integer &&  argument instanceof String
+     //   }
         //Si les arguments reçus sont invalides, elle retourne BAD_ARGUMENT_ERROR.
+     //   else{
+           // return "BAD_ARGUMENT_ERROR";
+    //    }
+
+        //code copier de ex4 + jourActuel
+        int idEmprunt;
+        int jourActuel;
+        try {
+            String[] argumentSeparer = argument.split(" "); //recuperer et separer l argument pour pouvoir le convertir
+            idEmprunt = Integer.parseInt(argumentSeparer[0]); //recuperer l id d emprunt et convertir en int
+            jourActuel = Integer.parseInt(argumentSeparer[1]); //recuperer le nombre des jour actuel et convertir en int
+        }
+        //argument doit etre un numbrer
+        catch(NumberFormatException e) {
+            return "BAD_ARGUMENT_ERROR";
+        }
+        //argument doit etre 2 agruments en total
+        catch(ArrayIndexOutOfBoundsException e) {
+            return "BAD_ARGUMENT_ERROR";
+        }
+        if(idEmprunt > 0 || jourActuel > 0 ){
+
+        }
         else{
             return "BAD_ARGUMENT_ERROR";
         }
-
-        //code copier de ex4 + jourActuel
-        String[ ] argumentSeparer = argument.split(" "); //recuperer et separer l argument pour pouvoir le convertir
-        int idEmprunt =  Integer.parseInt(argumentSeparer[0]); //recuperer l id d emprunt et convertir en int
-        int jourActuel=  Integer.parseInt(argumentSeparer[1]); //recuperer le nombre des jour actuel et convertir en int
 
         Utilisateur utilisateurConnecte = this.utilisateursAuthentifies.get(idConnexion);//creer un utilisateur selon l ID de connexion,il cherche directement avec l id de connextion ,donc pas besoin de boucle
 
@@ -671,7 +722,7 @@ public class GestionnaireBibliotheque {
         //calculer le montant de la pénalité selon le type de l’utilisateur.
         double montantPenalite = utilisateurConnecte.calculerPenalite(jourRetard); //polymorphisme : si utilisateur est de type etudiant, l objet utilisateur  va utilise la methode d etudiant qui est redefini  partir de methode abstrat d utilisateur
         //Si l’emprunt n’est pas en retard,le montant retourné doit être 0.00 et le nombre de jours de retard doit être 0.
-        if(emprunt.estEnRetard(jourActuel)){
+        if(!emprunt.estEnRetard(jourActuel)){
             montantPenalite = 0;
             jourRetard = 0;
         }
@@ -694,21 +745,41 @@ public class GestionnaireBibliotheque {
     public String traiterREGISTER(String argument) { //// argument = <id utilisateur>  <type utilisateur>  <nom utilisateur>.
 
     //récupérer les paramètres de la commande
-        String[ ] argumentSeparer = argument.split(" "); //recuperer et separer l argument pour pouvoir le convertir
-        int idUtilisateur = Integer.parseInt(argumentSeparer[0]); //recuperer l id d utilisateur et convertir en int
-        String typeUtilisateur = (argumentSeparer[1]); //recuperer le TypeUtilisateur //delete this --> TypeUtilisateur typeUtilisateur = TypeUtilisateur.valueOf(argumentSeparer[1]); //recuperer le TypeUtilisateur et convertir en TypeUtilisateur avec valueOf
-        String nomUtilisateur = argumentSeparer[2]; //recuperer le nom d utilisateur
+    // vérifier si les paramètres sont valides
+        int idUtilisateur ;
+        String typeUtilisateur ;
+        String nomUtilisateur ;
 
+        try {
+            String[] argumentSeparer = argument.split(" "); //recuperer et separer l argument pour pouvoir le convertir
+            idUtilisateur = Integer.parseInt(argumentSeparer[0]); //recuperer l id d utilisateur et convertir en int
+            typeUtilisateur = (argumentSeparer[1]); //recuperer le TypeUtilisateur //delete this --> TypeUtilisateur typeUtilisateur = TypeUtilisateur.valueOf(argumentSeparer[1]); //recuperer le TypeUtilisateur et convertir en TypeUtilisateur avec valueOf
+            nomUtilisateur = argumentSeparer[2]; //recuperer le nom d utilisateur
+        }
+        catch(NumberFormatException e) {
+            return "BAD_ARGUMENT_ERROR";
+        }
+        //argument doit etre 3 agruments en total
+        catch(ArrayIndexOutOfBoundsException e) {
+            return "BAD_ARGUMENT_ERROR";
+        }
         //vérifier si les paramètres sont valides
-
-        if(idUtilisateur > 0  || typeUtilisateur != null || nomUtilisateur != null ){//idUtilisateur instanceof Integer || typeUtilisateur instanceof String|| nomUtilisateur instanceof String//delete this--> if(idUtilisateur instanceof Integer || typeUtilisateur instanceof TypeUtilisateur || nomUtilisateur instanceof String){
+        if(idUtilisateur > 0){
 
         }
         else{
 
             return "BAD_ARGUMENT_ERROR";
-
         }
+
+       // if(idUtilisateur > 0  || typeUtilisateur != null || nomUtilisateur != null ){//idUtilisateur instanceof Integer || typeUtilisateur instanceof String|| nomUtilisateur instanceof String//delete this--> if(idUtilisateur instanceof Integer || typeUtilisateur instanceof TypeUtilisateur || nomUtilisateur instanceof String){
+
+      //  }
+      //  else{
+
+     //       return "BAD_ARGUMENT_ERROR";
+
+     //   }
 
 
 
@@ -765,7 +836,7 @@ public class GestionnaireBibliotheque {
         utilisateurs.put(idUtilisateur,utilisateurCree);
         //retourner la réponse REGISTERED <id utilisateur> <nom utilisateur>
 
-        String reponse = "REGISTERED "+" <"+ idUtilisateur+">"+" <" + nomUtilisateur +">" ;
+        String reponse = "REGISTERED "+"<"+ idUtilisateur+">"+" <" + nomUtilisateur +">" ;
         return reponse ;
 
 
