@@ -230,6 +230,10 @@ public class GestionnaireBibliotheque {
         catch (NumberFormatException e) {
             return "BAD_ARGUMENT_ERROR";
         }
+        //argument doit etre 2 agruments en total
+        catch(ArrayIndexOutOfBoundsException e) {
+            return "BAD_ARGUMENT_ERROR";
+        }
         if(idLivre > 0){
 
         }
@@ -323,6 +327,10 @@ public class GestionnaireBibliotheque {
             jour=  Integer.parseInt(argumentSeparer[1]); //recuperer le nombre des jour et convertir en int
         }
         catch (NumberFormatException e) {
+            return "BAD_ARGUMENT_ERROR";
+        }
+        //argument doit etre 2 agruments en total
+        catch(ArrayIndexOutOfBoundsException e) {
             return "BAD_ARGUMENT_ERROR";
         }
         if(idEmprunt>0 || jour>0){

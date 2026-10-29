@@ -201,6 +201,9 @@ public class Demo {
         System.out.println("vérifier que les arguments reçus sont invalides");
         System.out.println(""+gestionnaireBibliotheque.traiterCommande(2,"BORROW","1D 12"));
         System.out.println(""+gestionnaireBibliotheque.traiterCommande(2,"BORROW","1 12D"));
+        //verifier nombre d argument
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"BORROW","1 "));
+
 
         //vérifier que le livre demandé existe
         System.out.println("  ");
@@ -246,6 +249,10 @@ public class Demo {
         System.out.println("vérifier que les arguments reçus sont invalides ");
         System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RETURN","6D 52"));
         System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RETURN",""));
+        //verifier nombre d argument
+        System.out.println(""+ gestionnaireBibliotheque.traiterCommande(2,"RETURN","7 "));
+
+
 
         //Si l’emprunt demandé n’existe pas ou n’appartient pas à l’utilisateur connecté, elle retourne
         //BAD_BORROW_ERROR.
