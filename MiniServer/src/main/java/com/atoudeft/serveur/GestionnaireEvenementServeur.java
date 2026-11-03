@@ -60,10 +60,16 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
         if (source instanceof Connexion) {
             cnx = (Connexion) source;
             System.out.println("SERVEUR: Recu : " + evenement.getType() + " " + evenement.getArgument());
-            if ("EXIT".equals(evenement.getType())) {
+            if ("EXIT".equals(evenement.getType().toUpperCase())) {
+                //cnx.envoyer("END.");
+                //GestionnaireBibliotheque va gerer la sortie
+                int idConnexion = System.identityHashCode(evenement.getSource());
+                reponse = gestionnaireBibliotheque.traiterEXIT(idConnexion);
+                cnx.envoyer(reponse);
+                if("END".equals(reponse)){//fermer la connexion si le client est connecter sinon ne pas fermer la connextion
+                    cnx.close();
+                }
 
-                cnx.envoyer("END.");
-                cnx.close();
             } else {
                 /*
                  * ------------------------------------------------------------
@@ -96,8 +102,8 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
 
                 int idConnexion = System.identityHashCode(evenement.getSource());
-                String typeCommnade = ""+evenement.getType();
-                String argument = ""+evenement.getArgument().toUpperCase();
+                String typeCommnade = ""+evenement.getType().toUpperCase();
+                String argument = ""+evenement.getArgument();
                 String testReponse ="ideconnextion: "+idConnexion+" le type d evenement : "+ typeCommnade +" l argument d evenemnt: "+ argument ;
                 reponse = gestionnaireBibliotheque.traiterCommande(idConnexion,typeCommnade,argument);
                 //reponse = (evenement.getType() + " " + evenement.getArgument()).toUpperCase();

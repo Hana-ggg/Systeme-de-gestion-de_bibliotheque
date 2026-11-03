@@ -88,6 +88,9 @@ public class GestionnaireBibliotheque {
             case "EXIT" :
                 reponse = traiterEXIT(idConnexion);//ex9
                 return reponse ;
+            default:
+            reponse = "COMMAND_ERROR";//COMMAND_ERROR : retournée lorseque la commande n’est pas reconnue.
+
 
 
 
@@ -183,7 +186,7 @@ public class GestionnaireBibliotheque {
         //recupere le nombre des livres et convertir en string
 
         nbLivres = ""+ this.livres.taille();
-        reponse = "BOOKS"+" "+ nbLivres + " " ;
+        reponse = "BOOKS"+" "+ nbLivres + "" ;
         listeLivreReponse.add(reponse);
 
         //parcourir la liste des livres de la bibliothèque
@@ -197,7 +200,7 @@ public class GestionnaireBibliotheque {
             statut = " " + livreDansListe.getStatut();
 
         // format BOOKS <nb livres> {<id livre> <titre> <auteur> <categorie> <statut>}+;
-            reponse += "{" + idLivre + titre + auteur  + categorie  + statut + "}";
+            reponse += " {" + idLivre + titre + auteur  + categorie  + statut + "}";
             //listeLivreReponse.add(reponse);
 
         }
@@ -612,7 +615,7 @@ public class GestionnaireBibliotheque {
 
                 //forme: INFO <nb emprunts> {<id emprunt> <id livre> <jour emprunt> <jour retour prévu> <statut>}+
                 //ex:INFO 2 {1 5 10 50 EN_COURS} {2 3 12 52 EN_COURS}
-                reponse += "{" + idEmpruntChaine + idLivreChaine + jourEmprunt + jourRetourPrevu + statut + "}";
+                reponse += " {" + idEmpruntChaine + idLivreChaine + jourEmprunt + jourRetourPrevu + statut + "}";
                 //listeEmpruntReponse.add(reponse);
 
 
